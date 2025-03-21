@@ -23,10 +23,11 @@ function style_segments(segment) {
       (segment.properties.distance - distance_min) /
         (distance_max - distance_min)
     ),
-    dashArray: segment.properties.restricted ? "20, 10" : "-",
+    dashArray: segment.properties.restricted ? "10, 15" : "-",
     lineCap: "square",
     lineJoin: "bevel",
-    weight: segment.properties.restricted ? 5 : 10,
+    weight: 8,
+    //weight: segment.properties.restricted ? 5 : 10,
     fillOpacity: 0,
     interactive: true,
   };
