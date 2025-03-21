@@ -72,16 +72,6 @@
       });
 
       segments.features.forEach((segment) => {
-        // if (segment.properties.restricted) {
-        //   segments.features[
-        //     segments.features.indexOf(segment)
-        //   ].properties.difficulty = segment.properties.distance * 1.2;
-        // } else {
-        //   segments.features[
-        //     segments.features.indexOf(segment)
-        //   ].properties.difficulty = segment.properties.distance;
-        // }
-
         segments.features[segments.features.indexOf(segment)].properties.id =
           segments.features.indexOf(segment) + 1;
 
@@ -176,25 +166,6 @@
       layer_OSMStandard_0;
       map.addLayer(layer_OSMStandard_0);
 
-      // function style_segments(segment) {
-      //   return {
-      //     pane: "pane_segments",
-      //     opacity: 1,
-      //     color: getGradientColor(
-      //       "#91BF9D",
-      //       "#CC8D7A",
-      //       (segment.properties.difficulty - distance_min) /
-      //         (distance_max - distance_min)
-      //     ),
-      //     dashArray: "",
-      //     lineCap: "square",
-      //     lineJoin: "bevel",
-      //     weight: 8.0,
-      //     fillOpacity: 0,
-      //     interactive: true,
-      //   };
-      // }
-
       map.createPane("pane_segments");
       map.getPane("pane_segments").style.zIndex = 401;
       map.getPane("pane_segments").style["mix-blend-mode"] = "normal";
@@ -233,7 +204,18 @@
       bounds_group.addLayer(layer_stops);
       map.addLayer(layer_stops);
 
-      setBounds();
+      var stop_bounds = [];
+      stops.features.forEach((stop) => {
+
+        stop_bounds.push([
+          stop.geometry.coordinates[1],
+          stop.geometry.coordinates[0],
+        ]);
+      });
+
+
+      map.fitBounds(stop_bounds);
+      //      setBounds();
     </script>
   </body>
 </html>
