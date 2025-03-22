@@ -9,10 +9,43 @@
     />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta name="description" content="Map of Walk from SF to SD" />
+    <meta name="author" content="a cool guy" />
+    <link rel="icon" href="favicon.png" />
+
+    <title>Walk Map</title>
+
+    <!-- <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    /> -->
+
+    <!-- <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    /> -->
+    <!-- <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script> -->
+
     <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="css/site_styles.css" />
+
     <!-- <link rel="stylesheet" href="css/L.Control.Layers.Tree.css" /> -->
     <link rel="stylesheet" href="css/qgis2web.css" />
     <link rel="stylesheet" href="css/fontawesome-all.min.css" />
+
+    <script src="js/top_nav.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
     <style>
       html,
       body,
@@ -26,7 +59,20 @@
     <title></title>
   </head>
   <body>
-    <div id="map"></div>
+    <div class="grid-parent-page">
+      <div class="grid-div-nav" id="top_nav_div">
+        <script>
+          document.getElementById("top_nav_div").innerHTML += top_nav("map");
+        </script>
+      </div>
+      <div class="grid-div-main-body">
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="js/qgis2web_expressions.js"></script>
     <script src="js/leaflet.js"></script>
     <!-- <script src="js/L.Control.Layers.Tree.min.js"></script> -->
@@ -206,13 +252,11 @@
 
       var stop_bounds = [];
       stops.features.forEach((stop) => {
-
         stop_bounds.push([
           stop.geometry.coordinates[1],
           stop.geometry.coordinates[0],
         ]);
       });
-
 
       map.fitBounds(stop_bounds);
       //      setBounds();

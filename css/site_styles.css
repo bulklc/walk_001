@@ -1,0 +1,34 @@
+.grid-parent-page {
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: 100%;
+    width: 100%;
+    position: absolute
+}
+
+.grid-div-nav {
+
+    grid-area: 1 / 1 / 1 / 1;
+    height: 4vh;
+
+}
+
+.grid-div-main-body {
+
+    grid-area: 2 / 1 / 2 / 1;
+    height: 100%;
+}
+
+.navbar {
+    height: 100%;
+}
+
+/* tr {
+    line-height: 8px;
+    min-height: 8px;
+    height: 7px;
+ } */

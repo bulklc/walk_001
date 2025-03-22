@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <meta name="description" content="Table of Walk from SF to SD" />
+    <meta name="author" content="a cool guy" />
+    <link rel="icon" href="favicon.png" />
+
+    <title>Walk Table</title>
+
+    <link rel="stylesheet" href="css/site_styles.css" />
+    <link rel="stylesheet" href="css/fontawesome-all.min.css" />
+    <script src="js/top_nav.js"></script>
+    <script src="js/color_gradient.js"></script>
+    <script src="data/segments.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.24.1/bootstrap-table.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.24.1/bootstrap-table.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <title></title>
+  </head>
+  <body>
+    <div class="grid-parent-page">
+      <div class="grid-div-nav" id="top_nav_div">
+        <script>
+          document.getElementById("top_nav_div").innerHTML += top_nav("table");
+        </script>
+      </div>
+      <div class="grid-div-main-body" style="overflow: scroll">
+        <div class="table-responsive">
+          <table
+            id="table"
+            class="table-striped border-success"
+            data-show-footer="true"
+            data-row-style="rowStyle"
+          >
+            <thead>
+              <tr>
+                <th data-field="properties.id">Segment</th>
+                <th data-field="properties.start">Start</th>
+                <th data-field="properties.destination.city">Stop</th>
+                <th data-field="properties.destination.name">Lodging</th>
+                <th
+                  data-field="properties.restricted"
+                  class="text-center"
+                  data-footer-formatter="sumfooterLabel"
+                  data-footer-style="sumfooterlabelStyle"
+                >
+                  Restricted
+                </th>
+                <th
+                  data-field="properties.distance"
+                  class="text-right"
+                  data-formatter="distanceFormatter"
+                  data-footer-formatter="distancesumFormatter"
+                >
+                  Distance (mi)
+                </th>
+                <th
+                  data-field="properties.destination.cost"
+                  class="text-right"
+                  data-formatter="costFormatter"
+                  data-footer-formatter="costsumFormatter"
+                >
+                  Lodging Cost
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function distanceFormatter(value) {
+        return parseFloat(value).toFixed(2);
+      }
+
+      function costFormatter(value) {
+        return "$".concat(parseFloat(value).toFixed(2));
+      }
+
+      function sumfooterLabel() {
+        return "Sum:";
+      }
+
+      function distancesumFormatter(data) {
+        var sum = 0;
+
+        data.forEach((row) => {
+          sum += row[this.field.split(".")[0]][this.field.split(".")[1]];
+        });
+
+        return parseFloat(sum).toFixed(2);
+      }
+
+      function costsumFormatter(data) {
+        var sum = 0;
+
+        data.forEach((row) => {
+          sum += parseFloat(
+            row[this.field.split(".")[0]][this.field.split(".")[1]][
+              this.field.split(".")[2]
+            ]
+          );
+        });
+
+        return "$"
+          .concat(parseFloat(sum).toFixed(2))
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      function sumfooterlabelStyle() {
+        return {
+          css: { "text-align": "right" },
+        };
+      }
+
+      // function rowStyle(row, index) {
+      //   if (row.properties.restricted) {
+      //     return {
+      //       css: {
+      //         // 'border-color': "red",
+      //         // "border-collapse": "collapse",
+
+      //         "background-color": "#FFEBCC"
+      //       },
+      //     };
+      //   }
+      //   return {};
+      // }
+
+      segments.features.forEach((segment) => {
+        segments.features[
+          segments.features.indexOf(segment)
+        ].properties.id = `<a href="https://www.google.com/maps/dir/?api=1&origin=${[
+          segment.geometry.coordinates[0][0][1],
+          segment.geometry.coordinates[0][0][0],
+        ]}&destination=${[
+          segment.geometry.coordinates[0][
+            segment.geometry.coordinates[0].length - 1
+          ][1],
+          segment.geometry.coordinates[0][
+            segment.geometry.coordinates[0].length - 1
+          ][0],
+        ]}&travelmode=walking" target="_blank" rel="noopener noreferrer">${
+          segments.features.indexOf(segment) + 1
+        }</a>`;
+
+        segments.features[segments.features.indexOf(segment)].properties.start =
+          segments.features.indexOf(segment) == 0
+            ? "San Francisco"
+            : segments.features[segments.features.indexOf(segment) - 1]
+                .properties.destination.city;
+
+        segments.features[
+          segments.features.indexOf(segment)
+        ].properties.restricted = segments.features[
+          segments.features.indexOf(segment)
+        ].properties.restricted
+          ? "Yes"
+          : "";
+      });
+
+      var $table = $("#table");
+
+      $(function () {
+        $("#table").bootstrapTable({
+          data: segments.features,
+        });
+      });
+    </script>
+  </body>
+</html>
