@@ -13,7 +13,9 @@
 .grid-div-nav {
 
     grid-area: 1 / 1 / 1 / 1;
-    height: 4vh;
+    height: auto; 
+    min-height: 3.5em;
+    background-color: #003886;
 
 }
 
@@ -25,6 +27,7 @@
 
 .navbar {
     height: 100%;
+
 }
 
 /* tr {
